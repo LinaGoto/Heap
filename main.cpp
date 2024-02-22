@@ -48,11 +48,20 @@ void order(int count, int *array){
 
 void file (const char *text, int *array, int number){
   char taken [10];
-  int value[10];
-  
+  int takennum  = 0;
+  int arraycount = 0;
+
   for (int i=0; i<number; i++){
     if (text[i] != ' '){
-      //do here
+      taken[takennum] = text[i];
+      takennum++;
+    }
+    if (text[i] == ' '){
+      int value = atoi(taken);
+      array[arraycount] = value;
+      arraycount ++;
+      taken[0] = '\0';
+      value = 0;
     }
   }
   
@@ -83,6 +92,7 @@ int main(void){
 	track ++;
 	//order heap
 	order(track, heap);
+	print(track, heap);
       }
       else{
 	cout << "there are already 100 inputs" << endl;
@@ -101,14 +111,15 @@ int main(void){
       
       // Close the file
       MyReadFile.close();
-      
-    }
 
-    /*
+      print(track, heap);
+      }
+
+    /*  
     for (track = 0; track < 10; track ++) {
       heap[track] = rand() % 20;
-      //      print (track, heap);
-      //      printf("  x x x x\n");
+      print (track, heap);
+      printf("  x x x x\n");
       order(track, heap);
       print (track, heap);
       printf(" --------\n");
