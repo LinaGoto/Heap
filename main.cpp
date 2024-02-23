@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cstring>
 #include <math.h>
-#include <stdio.h>
 #include <fstream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -17,69 +17,53 @@ void print(int count, int *array){
   
   for (d = 0; d < depth(count) + 1; d ++) {
     int gap = (width(depth(count) - d) - 1) * 4;
-    for (z = 0; z < gap / 2; z ++) printf(" ");
+    for (z = 0; z < gap / 2; z ++)  { cout << " "; };
     for (w = 0; w < width(d); w ++) {
       i = width(d) - 1 + w;
       if (i < count) {
-	printf("%4d", array[i]);
+	cout << setw(4) << array[i];
 	if (w < width(d) - 1) {
-	  for (z = 0; z < gap; z ++) printf(" ");
+	  for (z = 0; z < gap; z ++) { cout << " "; }
 	}
       }
     }
-      printf("\n");
+    cout << endl;
   }
-  printf("\n");
+  cout << endl;
 }
 
 void order(int count, int *array){
   //p is parent
-  int p = parent(count);
-  
-  while (array[count] > array[p]){
-    int save = array[count];
-    array[count] = array[p];
-    array [p] = save;
+  int p;
 
-    count = p;
+  /* decrement by 1 to point out the last */
+  count --;
+
+  /* do nothing if count is too small */
+  if (count < 1) return;
+
+  while (count > 0) {
     p = parent(count);
-  }
-}
-
-void file (const char *text, int *array, int number){
-  char taken [10];
-  int takennum  = 0;
-  int arraycount = 0;
-
-  for (int i=0; i<number; i++){
-    if (text[i] != ' '){
-      taken[takennum] = text[i];
-      takennum++;
+    if (array[count] > array[p]){
+      int save = array[count];
+      array[count] = array[p];
+      array [p] = save;
     }
-    if (text[i] == ' '){
-      int value = atoi(taken);
-      array[arraycount] = value;
-      arraycount ++;
-      taken[0] = '\0';
-      value = 0;
-    }
+    count = p;
   }
-  
-  
 }
 
 int main(void){
 
   int heap[100];
-  int track =0;
-  bool play = true;
+  int track = 0;
 
   //input or by file
   char input [10];
   cout << "input or file?: " << endl;
   cin.get (input, 10);
   cin.get(); 
-    
+  
   //number entered by input
   if (input[0] == 'i' || input[0] == 'I'){
     int num;
@@ -99,30 +83,31 @@ int main(void){
       order(num + 1, heap);
       print(num + 1, heap);
     }
+
   } else{
       string myText;
       
       //Read from the text file
-      ifstream MyReadFile("random number.txt");
+      ifstream MyReadFile("random_number.txt");
       
       //read the file and send it to viod file
       getline (MyReadFile, myText);
-      file (myText.c_str(), heap, myText.length());
+      stringstream MyStreamText(myText);
+
+      while(getline(MyStreamText, myText, ' ')) {
+
+	heap[track] = atoi(myText.c_str());
+	track ++;
+	
+	//order heap
+	order(track, heap);
+      }
       
+      print(track, heap);
+
       // Close the file
       MyReadFile.close();
+  }
 
-      print(track, heap);
-      }
-
-    /*  
-    for (track = 0; track < 10; track ++) {
-      heap[track] = rand() % 20;
-      print (track, heap);
-      printf("  x x x x\n");
-      order(track, heap);
-      print (track, heap);
-      printf(" --------\n");
-      }
-    */
+  return 0;
 }
