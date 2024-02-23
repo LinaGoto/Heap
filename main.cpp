@@ -73,33 +73,33 @@ int main(void){
   int heap[100];
   int track =0;
   bool play = true;
-  do{
-    //input or by file
-    char input [10];
-    cout << "input or file?: " << endl;
-    cin.get (input, 10);
-    cin.get(); 
+
+  //input or by file
+  char input [10];
+  cout << "input or file?: " << endl;
+  cin.get (input, 10);
+  cin.get(); 
     
-    
-    //number entered by input
-    if (input[0] == 'i' || input[0] == 'I'){
-      if (track < 100){
-	cout << "enter a number:" << endl;
-	int num;
-	cin >> num;
-	cin.get();
-	heap[track] = num;
-	track ++;
-	//order heap
-	order(track, heap);
-	print(track, heap);
-      }
-      else{
-	cout << "there are already 100 inputs" << endl;
-      }
+  //number entered by input
+  if (input[0] == 'i' || input[0] == 'I'){
+    int num;
+    cout << "Total number of entries? " << endl;
+    cin >> track;
+    cin.get();
+
+    for (num = 0; num < track; num ++) {
+      int newnum;
+      cout << "number for " << num << "?" << endl;
+      cin >> newnum;
+      cin.get();
+
+      heap[num] = newnum;
+      
+      //order heap
+      order(num + 1, heap);
+      print(num + 1, heap);
     }
-    
-    else{
+  } else{
       string myText;
       
       //Read from the text file
@@ -125,5 +125,4 @@ int main(void){
       printf(" --------\n");
       }
     */
-  }while(play == true);
 }
