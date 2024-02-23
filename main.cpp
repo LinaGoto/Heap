@@ -53,6 +53,40 @@ void order(int count, int *array){
   }
 }
 
+void reorder(int number, int *array){
+  int count = 0;
+
+  while(count < number){
+    int lchild = childleft (count);
+    int rchild = childright(count);
+    //if both child exists
+    if (lchild < number && rchild < number) {
+    //if child left is bigger than right
+      if (array[lchild] >= array[rchild] && array[lchild] > array[count]) {
+	int save = array[count];
+	array[count] = array[lchild];
+	array[lchild] = save;
+	count = lchild;
+      } else 
+	//if child right is bigger than left
+	if (array[lchild] <= array[rchild] && array[rchild] > array[count]) {
+	  int save = array[count];
+	  array[count] = array[rchild];
+	  array[rchild] = save;
+	  count = rchild;
+	}
+    } else
+      //if one child exist
+      if (lchild < number && rchild >= number && array[lchild] > array[count]){
+	int save = array[count];
+	array[count] = array[lchild];
+	array[lchild] = save;
+	count = lchild;
+      }
+      else break;
+  }
+}
+
 int main(void){
 
   int heap[100];
@@ -81,7 +115,6 @@ int main(void){
       
       //order heap
       order(num + 1, heap);
-      print(num + 1, heap);
     }
 
   } else{
@@ -103,11 +136,23 @@ int main(void){
 	order(track, heap);
       }
       
-      print(track, heap);
-
       // Close the file
       MyReadFile.close();
   }
 
+  print(track, heap);
+
+  
+  while(track > 0){
+    cout << heap[0] << endl;
+    heap[0] = heap[track-1];
+    track--;
+
+    reorder(track, heap);
+
+  }
+
+
+  
   return 0;
 }
